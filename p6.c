@@ -3,11 +3,12 @@
 #include <pthread.h>
 #include <dlfcn.h>
 
-void* sub_thread(void *arg);
+void* sub_function(void *arg);
 
 int main(int argc,char *argv[]){
 
         alarm(60);
+
         pthread_t tdid;
         void *handle;
         char *error;
@@ -20,15 +21,15 @@ int main(int argc,char *argv[]){
         //printf("argv[0] : %s \n", argv[0]);
         //printf("argv[1] : %s \n", argv[1]);
         //printf("argv[2] : %s \n", argv[2]);
-        //
         
-        arg = atoi(argv[1]);
+        arg = atol(argv[1]);
         //printf("arg : %ld\n", arg);
 
         //printf("variable arg is at address: %p\n", (void*)&arg);
 
         // Dynamically load shared lib 
         handle = dlopen("/lib/x86_64-linux-gnu/libpthread.so.0",RTLD_LAZY);
+        // error handling if dlopen cannot open lub
         if(!handle){
                 //printf("Hello Error");
                 fprintf(stderr,"%s\n",dlerror());
@@ -43,12 +44,13 @@ int main(int argc,char *argv[]){
                 exit(1);
         }
 
-        printf("starting thread, arg = %ld\n", arg);
+        //printf("starting thread, arg = %ld\n", arg);
         //pthread_create(&tdid,NULL,sub,(void *)NULL);
         // create the thread and pass the sub function to it w/ the pointerto our arg
-        pthread_create(&tdid,NULL,sub_thread,(void *)arg);
+        pthread_create(&tdid,NULL,sub_function,(void *)arg);
         pthread_join(tdid,NULL);
 
+        // error handling 
         if(dlclose(handle)<0){
                 fprintf(stderr,"%s\n",dlerror());
                 exit(-1);
@@ -56,19 +58,10 @@ int main(int argc,char *argv[]){
         return 0;
 }
 
-void* sub_thread(void *arg){
+void* sub_function(void *arg){
 
-        long inty;
-        inty = *((long *)arg);
-        p6test(&inty);
+        p6test(&arg);
 
-        //p6test(arg);
-
-        //printf("thread is inside sub arg = %p\n", arg);
-        //printf("exiting thread, arg = %ld\n", *arg);
-        //printf("\nlVptr[60 ] is  %d \n", *(int*)lVptr);
-        //printf("exiting thread, arg = %d\n", *(int*)arg);
-        
         //long int inty = (long int) arg;
-        //printf("exiting thread, arg = %ld\n", inty);
+        //printf("exiting thread, arg = %ld\n", (long int)arg);
 }
