@@ -1,0 +1,44 @@
+
+                             Operating Systems
+                                  Project 6
+                                  Fall 2017
+
+
+turnin code:  cs_p6
+
+
+Write a C program which is statically linked to:
+
+    ~rbutler/public/courses/cs/p6test.o
+
+and dynamically linked to most other functions, such as printf,
+but, the program should use dynamic loading to load pthread_create and
+pthread_join.
+You can discover the locations of the pthreads libraries by using:
+    ldd -v   
+on existing executables that use pthreads.
+You can verify that p6test is statically in the executable by running:
+    nm p6 | grep p6test
+and verifying that it is type T, i.e. text instead of U unresolved.
+Likewise, you can verity that printf is dynamically linked.
+
+Create a thread which executes p6test with an integer argument equal to
+the only command-line argument.  So, if I invoke your program this way:
+
+    ./p6 9999
+
+the program should create a thread which receives a pointer to a
+long int variable that has the value 9999.
+The p6test function may take a couple of seconds to complete.
+The program should do a pthread_join with the thread.
+
+TURNIN info:
+    You should submit a tar file of a directory which contains all of the
+    required files (makefile, C source files, header files, etc.).
+    Sample tar command to create a tar file from a dir named p6dir:
+	tar cvf p6.tar ./p6dir  ## do *NOT* use full pathname of the dir
+    After un-tarring your project, I will cd to the dir containing
+    it and type:
+        rm -rf p6
+        rm -f  *.o
+        make

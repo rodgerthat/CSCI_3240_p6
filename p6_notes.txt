@@ -1,0 +1,60 @@
+
+p6 Notes . . .
+
+Dynamic Linking
+
+cd rbut/STUFFrmb/code_m64/13DYN
+
+make prog
+
+completes about 2/3 of the project. 
+
+make prog2.c
+
+nm prog2c
+
+make
+
+nm prog2l |less
+
+make prog2r
+
+// in the file 
+handle = dlopen
+
+
+you wanna open the pthread dynamic library
+
+there's a hint in the proj discription
+
+threademo
+
+ldd threademo
+
+you'll have loaded it, 
+but you have to remember how to call it. 
+
+
+pthread_create
+
+
+RTLD_LAZY - 
+
+
+i-------------------------------------------
+
+
+interpositioning case study. 
+
+there's atext file in /interpose
+
+under /STUFFrmb/code_m64/13DYN/interpose
+
+ldd intr
+
+LD_PRELOAD=./mymalloc.so ldd intr
+
+(LD_PRELOAD="./mymalloc.so" ./intr)
+^ runs a process w/ an environment var set for just that processs. 
+^ "parentesized"
+
